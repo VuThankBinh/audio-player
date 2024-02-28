@@ -53,7 +53,6 @@
         android:text="Ai ố xì mà"
         android:textColor="@color/white"
         android:textSize="35dp"
-        android:id="@+id/tenbai"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"/>
     <TextView
@@ -61,7 +60,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nguyễn Đức Phương"
-        android:id="@+id/casi"
         android:layout_marginLeft="20dp"
         android:textSize="25dp"
         android:textColor="#E4DFDF"/>

@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             }
-             // Sử dụng getResource() để lấy đường dẫn đúng
+            // Sử dụng getResource() để lấy đường dẫn đúng
             mp.prepare();
             mp.start();
 
