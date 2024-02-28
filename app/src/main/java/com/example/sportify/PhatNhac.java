@@ -2,6 +2,7 @@ package com.example.sportify;
 
 import static com.example.sportify.MainActivity.currentPosition;
 import static com.example.sportify.MainActivity.danhSachBaiHat;
+import static com.example.sportify.MainActivity.danhSachBaiHatDefault;
 import static com.example.sportify.MainActivity.mp;
 import static com.example.sportify.MainActivity.sttbai;
 
@@ -171,16 +172,20 @@ public class PhatNhac extends AppCompatActivity {
         });
         LoadBaiHienTai();
     }
-    public void phatbai(int stt){
+    public void phatbai1(int stt){
         MainActivity.audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         txt_song_name.setText(danhSachBaiHat.get(stt-1).getTenBaiHat());
         txt_artist_name.setText(" ("+danhSachBaiHat.get(stt-1).getCaSi()+")");
+        img=findViewById(R.id.img);
+
         String fileName = danhSachBaiHat.get(stt-1).getFileanh(); // Lấy tên tệp ảnh từ đối tượng baiHat
         int resId = getResources().getIdentifier(fileName, "drawable", getPackageName()); // Tìm ID tài nguyên dựa trên tên tệp ảnh
+
         if (resId != 0) {
             img.setImageResource(resId); // Thiết lập hình ảnh cho ImageView
         } else {
-            // Xử lý trường hợp không tìm thấy tệp ảnh
+
+            Toast.makeText(PhatNhac.this, "resId", Toast.LENGTH_SHORT).show();
         }
         try {
             mp.reset();
@@ -210,42 +215,23 @@ public class PhatNhac extends AppCompatActivity {
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+
                     if(checkrepeat){
                         mp.start();
                     }
-                    else if(checkshuffle) {
-                        ArrayList<BaiHat> danhSachBaiHatShuffle = new ArrayList<>();
-                        danhSachBaiHatShuffle = danhSachBaiHat;
-                        danhSachBaiHatShuffle.remove(sttbai - 1);
-                        Collections.shuffle(danhSachBaiHatShuffle);
-                        danhSachBaiHatShuffle.add(danhSachBaiHat.get(sttbai - 1));
-                        danhSachBaiHat = danhSachBaiHatShuffle;
-                    }
-                    else if(!checkshuffle) {
-                        danhSachBaiHat = new ArrayList<>();
-                        // Tạo và thêm các đối tượng BaiHat vào danh sách
-                        BaiHat baiHat1 = new BaiHat(1, "Ai ố xì mà", "Nguyễn Đức Phương", "ai_o_si_ma.mp3","img_1");
-                        BaiHat baiHat2 = new BaiHat(2, "Nàng thơ", "Hoàng Dũng", "nang_tho.mp3","img_6");
-                        BaiHat baiHat3 = new BaiHat(3, "Thằng điên", "Justatee, Phương Ly", "thang_dien.mp3","img_8");
-                        BaiHat baiHat4 = new BaiHat(4, "Lối nhỏ", "Đen vâu", "loi_nho.mp3","img_7");
-
-                        danhSachBaiHat.add(baiHat1);
-                        danhSachBaiHat.add(baiHat2);
-                        danhSachBaiHat.add(baiHat3);
-                        danhSachBaiHat.add(baiHat4);
-                    }
                     else {
+                       danhSachBaiHat=danhSachBaiHatDefault;
                         if(sttbai<4){
-                            phatbai(sttbai+1);
+                            phatbai1(sttbai+1);
                             sttbai+=1;
                         }
                         else {
-                            phatbai(1);
+                            phatbai1(1);
                             sttbai=1;
                         }
                     }
 
-                    // Bắt đầu phát lại khi kết thúc
+
                 }
             });
         } catch (Exception ex) {
@@ -328,7 +314,7 @@ public class PhatNhac extends AppCompatActivity {
         }
         else {
             if(currentPosition == 0) {
-                phatbai(1);
+                phatbai1(1);
                 sttbai=1;
             }
             else {
@@ -346,21 +332,21 @@ public class PhatNhac extends AppCompatActivity {
     }
     public void  nextbai1(){
         if(sttbai<4){
-            phatbai(sttbai+1);
+            phatbai1(sttbai+1);
             sttbai+=1;
         }
         else {
-            phatbai(1);
+            phatbai1(1);
             sttbai=1;
         }
     }
     public void  backbai1(){
         if(sttbai<2){
-            phatbai(4);
+            phatbai1(4);
             sttbai=4;
         }
         else {
-            phatbai(sttbai-1);
+            phatbai1(sttbai-1);
             sttbai-=1;
         }
     }

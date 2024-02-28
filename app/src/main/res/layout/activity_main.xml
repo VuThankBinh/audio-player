@@ -40,16 +40,18 @@
                 android:layout_gravity="center"
                 android:textColor="@color/white"/>
         </LinearLayout>
+
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_marginTop="10dp"
+            android:id="@+id/playlist"
             android:layout_width="150dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
-            android:text="Play"
-            android:textSize="25dp"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button"
-            android:id="@+id/playlist"/>
+            android:text="Play"
+            android:textColor="@color/white"
+            android:textSize="25dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

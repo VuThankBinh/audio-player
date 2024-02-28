@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,7 +20,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout bottom_layout;
+
     public static ArrayList<BaiHat> danhSachBaiHat = new ArrayList<>();
+    public static ArrayList<BaiHat> danhSachBaiHatDefault = new ArrayList<>();
     static TextView tenbai;
     static TextView tentg;
     AppCompatButton playlist;
@@ -51,6 +54,32 @@ public class MainActivity extends AppCompatActivity {
         play3=findViewById(R.id.play3);
         play4=findViewById(R.id.play4);
         play_pause=findViewById(R.id.play);
+        playlist=findViewById(R.id.playlist);
+        final boolean[] baml1 = {false};
+        playlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(playlist.getText().toString().trim().toUpperCase().compareTo("PLAY")!=0){
+                    if(baml1[0] ==false){
+                        phatbai(1);
+                        sttbai=1;
+                        baml1[0] =true;
+                    }
+                    else {
+                        pauseAudio();
+                    }
+                    playlist.setText("PAUSE");
+                    play_pause.setImageResource(R.drawable.baseline_pause_24);
+
+                }
+                else {
+                    pauseAudio();
+                    playlist.setText("PLAY");
+                    play_pause.setImageResource(R.drawable.play_5);
+                }
+
+            }
+        });
         play_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
