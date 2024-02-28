@@ -22,6 +22,7 @@ import android.widget.Toast;
 public class PhatNhac extends AppCompatActivity {
     ImageButton btn_back;
     ImageView btn_play;
+    ImageView img;
     TextView txt_song_name, txt_artist_name, txt_current_time, txt_remaining_time;
     private Handler mHandler;
     private Runnable mRunnable;
@@ -38,6 +39,12 @@ public class PhatNhac extends AppCompatActivity {
         txt_current_time = findViewById(R.id.txt_current_time);
         txt_remaining_time = findViewById(R.id.txt_remaining_time);
 
+        btn_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pauseAudio();
+            }
+        });
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,13 +120,21 @@ public class PhatNhac extends AppCompatActivity {
     public void LoadBaiHienTai() {
         txt_song_name.setText(danhSachBaiHat.get(sttbai-1).getTenBaiHat());
         txt_artist_name.setText(danhSachBaiHat.get(sttbai-1).getCaSi());
+        img=findViewById(R.id.img);
+        String fileName = danhSachBaiHat.get(sttbai-1).getFileanh(); // Lấy tên tệp ảnh từ đối tượng baiHat
+        int resId = getResources().getIdentifier(fileName, "drawable", getPackageName()); // Tìm ID tài nguyên dựa trên tên tệp ảnh
+        if (resId != 0) {
+            img.setImageResource(resId); // Thiết lập hình ảnh cho ImageView
+        } else {
+            // Xử lý trường hợp không tìm thấy tệp ảnh
+        }
         int currentPos = mp.getCurrentPosition();
         int duration = mp.getDuration();
         int remainingTime = duration - currentPos;
         String currentPositionStr = millisecondsToMMSS(currentPos);
         String remainingTimeStr = millisecondsToMMSS(remainingTime);
-        Toast.makeText(this, "Current pos: " + currentPositionStr + ", duration: "
-                + duration + ", remainingTime: " + remainingTimeStr, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Current pos: " + currentPositionStr + ", duration: "
+//                + duration + ", remainingTime: " + remainingTimeStr, Toast.LENGTH_SHORT).show();
         txt_current_time.setText(currentPositionStr);
         txt_remaining_time.setText(remainingTimeStr);
     }
@@ -168,6 +183,25 @@ public class PhatNhac extends AppCompatActivity {
             txt_song_name.setText(danhSachBaiHat.get(sttbai-1).getTenBaiHat());
             txt_artist_name.setText(danhSachBaiHat.get(sttbai-1).getCaSi());
         }
+    }
+    public void pauseAudio() {
+        if (mp != null && mp.isPlaying()) {
+            mp.pause();
+            currentPosition = mp.getCurrentPosition();
+            btn_play.setImageResource(R.drawable.play4);
+        }
+        else {
+            if(currentPosition == 0) {
+                phatbai(1);
+                sttbai=1;
+            }
+            else {
+                mp.seekTo(currentPosition);
+                mp.start();
+                btn_play.setImageResource(R.drawable.baseline_pause_24);
+            }
+        }
+
     }
     private String millisecondsToMMSS(int milliseconds) {
         int seconds = (milliseconds / 1000) % 60;

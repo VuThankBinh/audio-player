@@ -3,6 +3,7 @@ package com.example.sportify;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -104,36 +105,20 @@ public class MainActivity extends AppCompatActivity {
         tenbai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog(danhSachBaiHat.get(sttbai-1));
+                startActivity(new Intent(MainActivity.this,PhatNhac.class));
             }
         });
         tentg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog(danhSachBaiHat.get(sttbai-1));
+                startActivity(new Intent(MainActivity.this,PhatNhac.class));
             }
         });
 
-    }
-    public void showDialog(BaiHat baiHat){
-        Dialog dialog = new Dialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
-        dialog.setContentView(R.layout.activity_phat_nhac);
-        TextView tenbai=dialog.findViewById(R.id.tenbai);
-        TextView casi=dialog.findViewById(R.id.casi);
-        ImageView img=dialog.findViewById(R.id.img);
-        tenbai.setText(baiHat.getTenBaiHat());
-        String fileName = baiHat.getFileanh(); // Lấy tên tệp ảnh từ đối tượng baiHat
-        int resId = getResources().getIdentifier(fileName, "drawable", getPackageName()); // Tìm ID tài nguyên dựa trên tên tệp ảnh
-        if (resId != 0) {
-            img.setImageResource(resId); // Thiết lập hình ảnh cho ImageView
-        } else {
-            // Xử lý trường hợp không tìm thấy tệp ảnh
-        }
-
-        casi.setText(baiHat.getCaSi());
-        dialog.show();
 
     }
+
+
     public void  nextbai1(){
         if(sttbai<4){
             phatbai(sttbai+1);
