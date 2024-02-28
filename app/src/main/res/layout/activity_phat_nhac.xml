@@ -7,22 +7,38 @@
     android:orientation="vertical"
     android:background="@drawable/backgroud"
     tools:context=".PhatNhac">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="PLAYING FROM ALBUM"
-        android:textSize="25dp"
-        android:layout_gravity="center"
-        android:textColor="@color/white"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ba Con Rồng"
-        android:layout_gravity="center"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:textColor="@color/white"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/baseline_arrow_back_24"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/txt_album"/>
+        <TextView
+            android:id="@+id/txt_album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="PLAYING FROM ALBUM"
+            android:textSize="25dp"
+            android:textColor="@color/white"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ba Con Rồng"
+            android:layout_gravity="center"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_below="@+id/txt_album"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
     <ImageView
         android:layout_width="320dp"
         android:layout_height="380dp"
@@ -31,6 +47,7 @@
         android:src="@drawable/img"
         android:id="@+id/img"/>
     <TextView
+        android:id="@+id/txt_song_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ai ố xì mà"
@@ -40,6 +57,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"/>
     <TextView
+        android:id="@+id/txt_artist_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nguyễn Đức Phương"
@@ -48,69 +66,79 @@
         android:textSize="25dp"
         android:textColor="#E4DFDF"/>
     <SeekBar
-        android:layout_width="390dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/seekbar"
         android:layout_marginTop="20dp">
     </SeekBar>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/txt_current_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0.00"
+            android:text="0:00"
             android:layout_marginLeft="10dp"
             android:textColor="@color/white"
-            android:layout_marginRight="280dp"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:layout_alignParentLeft="true"/>
         <TextView
+            android:id="@+id/txt_remaining_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4.00"
-            android:layout_marginLeft="10dp"
+            android:text="4:00"
+            android:layout_marginRight="10dp"
             android:textColor="@color/white"
-            android:textSize="20dp"/>
-    </LinearLayout>
-    <LinearLayout
+            android:textSize="20dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
         <ImageView
-            android:layout_marginTop="20dp"
+            android:id="@+id/btn_suffer"
             android:layout_marginLeft="20dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/shuffle"
-            android:backgroundTint="#B5ACAC"/>
+            android:backgroundTint="#B5ACAC"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"/>
         <ImageView
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="50dp"
+            android:id="@+id/btn_previous_song"
+            android:layout_marginRight="30dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/back"
-            android:backgroundTint="@color/white"/>
+            android:backgroundTint="@color/white"
+            android:layout_toLeftOf="@+id/btn_play"
+            android:layout_centerVertical="true"/>
+
         <ImageView
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="30dp"
+            android:id="@+id/btn_play"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_centerInParent="true"
             android:background="@drawable/play4"
-            android:backgroundTint="@color/white"/>
+            android:backgroundTint="@color/white" />
         <ImageView
-            android:layout_marginTop="20dp"
+            android:id="@+id/btn_next_song"
             android:layout_marginLeft="30dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/play3"
-            android:backgroundTint="@color/white"/>
+            android:backgroundTint="@color/white"
+            android:layout_toRightOf="@+id/btn_play"
+            android:layout_centerVertical="true"/>
         <ImageView
-            android:layout_marginTop="23dp"
-            android:layout_marginLeft="40dp"
+            android:id="@+id/btn_repeat"
+            android:layout_marginRight="20dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/repeat"
-            android:backgroundTint="#B5ACAC"/>
-    </LinearLayout>
+            android:backgroundTint="#B5ACAC"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
 </LinearLayout>
