@@ -218,8 +218,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_toLeftOf="@id/nextsong"
-                    android:background="@drawable/play2"
-                    android:backgroundTint="@color/white" />
+                    android:src="@drawable/play5"/>
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
