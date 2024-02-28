@@ -17,14 +17,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout bottom_layout;
-    ArrayList<BaiHat> danhSachBaiHat = new ArrayList<>();
+    public static ArrayList<BaiHat> danhSachBaiHat = new ArrayList<>();
     TextView tenbai,tentg;
     AppCompatButton playlist;
     ImageView play1,play2,play3,play4,play_pause,nextbai;
-    int sttbai;
-    private MediaPlayer mp = new MediaPlayer();
-    private AudioManager audioManager;
-    private int currentPosition;
+    public static int sttbai;
+    public static MediaPlayer mp = new MediaPlayer();
+    public static AudioManager audioManager;
+    public static int currentPosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     phatbai(stt+1);
-                    // Bắt đầu phát lại khi kết thúc
+                    sttbai+=1;
                 }
             });
         } catch (Exception ex) {
