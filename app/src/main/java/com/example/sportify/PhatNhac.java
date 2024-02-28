@@ -28,6 +28,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 public class PhatNhac extends AppCompatActivity {
     ImageButton btn_back;
     ImageView btn_play,btn_previous_song,btn_next_song;
@@ -36,7 +40,7 @@ public class PhatNhac extends AppCompatActivity {
     private Handler mHandler;
     private Runnable mRunnable;
     private SeekBar seekBar;
-    boolean checkrepeat=false;
+    boolean checkrepeat=false, checkshuffle = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,6 @@ public class PhatNhac extends AppCompatActivity {
 
                     // Đặt Drawable đã được thay đổi màu làm background cho ImageView
                     repeat.setImageDrawable(drawable);
-                    Toast.makeText(PhatNhac.this, "phg ngu " + checkrepeat, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Drawable drawable = ContextCompat.getDrawable(PhatNhac.this, R.drawable.repeat);
@@ -85,7 +88,36 @@ public class PhatNhac extends AppCompatActivity {
 
                     // Đặt Drawable đã được thay đổi màu làm background cho ImageView
                     repeat.setImageDrawable(drawable);
-                    Toast.makeText(PhatNhac.this, "phg ngu " + checkrepeat, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkshuffle=!checkshuffle;
+                if(checkshuffle){
+                    Drawable drawable = ContextCompat.getDrawable(PhatNhac.this, R.drawable.shuffle);
+
+                    // Tạo màu mới từ tài nguyên color
+                    int newTintColor = ContextCompat.getColor(PhatNhac.this, R.color.timmongmo);
+
+                    // Thay đổi màu của Drawable
+                    DrawableCompat.setTint(drawable, newTintColor);
+
+                    // Đặt Drawable đã được thay đổi màu làm background cho ImageView
+                    shuffle.setImageDrawable(drawable);
+                }
+                else {
+                    Drawable drawable = ContextCompat.getDrawable(PhatNhac.this, R.drawable.shuffle);
+
+                    // Tạo màu mới từ tài nguyên color
+                    int newTintColor = ContextCompat.getColor(PhatNhac.this, R.color.new_tint_color);
+
+                    // Thay đổi màu của Drawable
+                    DrawableCompat.setTint(drawable, newTintColor);
+
+                    // Đặt Drawable đã được thay đổi màu làm background cho ImageView
+                    shuffle.setImageDrawable(drawable);
                 }
             }
         });
@@ -178,11 +210,31 @@ public class PhatNhac extends AppCompatActivity {
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if(checkrepeat==true){
+                    if(checkrepeat){
                         mp.start();
                     }
-                    else {
+                    else if(checkshuffle) {
+                        ArrayList<BaiHat> danhSachBaiHatShuffle = new ArrayList<>();
+                        danhSachBaiHatShuffle = danhSachBaiHat;
+                        danhSachBaiHatShuffle.remove(sttbai - 1);
+                        Collections.shuffle(danhSachBaiHatShuffle);
+                        danhSachBaiHatShuffle.add(danhSachBaiHat.get(sttbai - 1));
+                        danhSachBaiHat = danhSachBaiHatShuffle;
+                    }
+                    else if(!checkshuffle) {
+                        danhSachBaiHat = new ArrayList<>();
+                        // Tạo và thêm các đối tượng BaiHat vào danh sách
+                        BaiHat baiHat1 = new BaiHat(1, "Ai ố xì mà", "Nguyễn Đức Phương", "ai_o_si_ma.mp3","img_1");
+                        BaiHat baiHat2 = new BaiHat(2, "Nàng thơ", "Hoàng Dũng", "nang_tho.mp3","img_6");
+                        BaiHat baiHat3 = new BaiHat(3, "Thằng điên", "Justatee, Phương Ly", "thang_dien.mp3","img_8");
+                        BaiHat baiHat4 = new BaiHat(4, "Lối nhỏ", "Đen vâu", "loi_nho.mp3","img_7");
 
+                        danhSachBaiHat.add(baiHat1);
+                        danhSachBaiHat.add(baiHat2);
+                        danhSachBaiHat.add(baiHat3);
+                        danhSachBaiHat.add(baiHat4);
+                    }
+                    else {
                         if(sttbai<4){
                             phatbai(sttbai+1);
                             sttbai+=1;
