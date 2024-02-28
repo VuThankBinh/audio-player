@@ -9,13 +9,14 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    LinearLayout bottom_layout;
     ArrayList<BaiHat> danhSachBaiHat = new ArrayList<>();
     TextView tenbai,tentg;
     AppCompatButton playlist;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         danhSachBaiHat.add(baiHat2);
         danhSachBaiHat.add(baiHat3);
         danhSachBaiHat.add(baiHat4);
+        bottom_layout=findViewById(R.id.bottom_layout);
         tenbai=findViewById(R.id.tenbaihat);
         tentg=findViewById(R.id.tentacgia);
         play1=findViewById(R.id.play1);
@@ -90,6 +92,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 nextbai1();
 
+            }
+        });
+        bottom_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, PhatNhac.class));
             }
         });
         tenbai.setOnClickListener(new View.OnClickListener() {
@@ -164,9 +172,15 @@ public class MainActivity extends AppCompatActivity {
             play_pause.setImageResource(R.drawable.play_5);
         }
         else {
-            mp.seekTo(currentPosition);
-            mp.start();
-            play_pause.setImageResource(R.drawable.baseline_pause_24);
+            if(currentPosition == 0) {
+                phatbai(1);
+                sttbai=1;
+            }
+            else {
+                mp.seekTo(currentPosition);
+                mp.start();
+                play_pause.setImageResource(R.drawable.baseline_pause_24);
+            }
         }
 
     }

@@ -57,7 +57,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0.00"
+            android:text="0:00"
             android:layout_marginLeft="10dp"
             android:textColor="@color/white"
             android:layout_marginRight="280dp"
@@ -65,7 +65,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4.00"
+            android:text="4:00"
             android:layout_marginLeft="10dp"
             android:textColor="@color/white"
             android:textSize="20dp"/>
