@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sportify"
         tools:targetApi="31">
+        <activity android:name=".PhatNhac"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
