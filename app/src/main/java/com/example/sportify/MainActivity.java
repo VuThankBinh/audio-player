@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         play_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resumeAudio();
                 pauseAudio();
             }
         });
@@ -149,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    mp.start(); // Bắt đầu phát lại khi kết thúc
+                    phatbai(stt+1);
+                    // Bắt đầu phát lại khi kết thúc
                 }
             });
         } catch (Exception ex) {
@@ -162,14 +163,14 @@ public class MainActivity extends AppCompatActivity {
             currentPosition = mp.getCurrentPosition();
             play_pause.setImageResource(R.drawable.play_5);
         }
-    }
-
-    public void resumeAudio() {
-        if (mp != null && !mp.isPlaying()) {
+        else {
             mp.seekTo(currentPosition);
             mp.start();
             play_pause.setImageResource(R.drawable.baseline_pause_24);
         }
+
     }
+
+
 
 }
