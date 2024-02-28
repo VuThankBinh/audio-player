@@ -6,7 +6,14 @@ import static com.example.sportify.MainActivity.mp;
 import static com.example.sportify.MainActivity.sttbai;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.widget.ImageViewCompat;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -21,24 +28,61 @@ import android.widget.Toast;
 
 public class PhatNhac extends AppCompatActivity {
     ImageButton btn_back;
-    ImageView btn_play;
-    ImageView img;
+    ImageView btn_play,btn_previous_song,btn_next_song;
+    ImageView img,repeat,shuffle;
     TextView txt_song_name, txt_artist_name, txt_current_time, txt_remaining_time;
     private Handler mHandler;
     private Runnable mRunnable;
     private SeekBar seekBar;
+    boolean checkrepeat=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phat_nhac);
         btn_back = findViewById(R.id.btn_back);
         btn_play = findViewById(R.id.btn_play);
+        btn_previous_song=findViewById(R.id.btn_previous_song);
+        btn_next_song=findViewById(R.id.btn_next_song);
         txt_song_name = findViewById(R.id.txt_song_name);
         seekBar = findViewById(R.id.seekbar);
         txt_artist_name = findViewById(R.id.txt_artist_name);
         txt_current_time = findViewById(R.id.txt_current_time);
         txt_remaining_time = findViewById(R.id.txt_remaining_time);
+        repeat=findViewById(R.id.btn_repeat);
+        shuffle=findViewById(R.id.btn_suffer);
+        repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkrepeat=!checkrepeat;
+                if(checkrepeat){
+                    Drawable drawable = ContextCompat.getDrawable(PhatNhac.this, R.drawable.repeat);
 
+                    // Tạo màu mới từ tài nguyên color
+                    int newTintColor = ContextCompat.getColor(PhatNhac.this, R.color.timmongmo);
+
+                    // Thay đổi màu của Drawable
+                    DrawableCompat.setTint(drawable, newTintColor);
+
+                    // Đặt Drawable đã được thay đổi màu làm background cho ImageView
+                    repeat.setImageDrawable(drawable);
+                    Toast.makeText(PhatNhac.this, "phg ngu " + checkrepeat, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Drawable drawable = ContextCompat.getDrawable(PhatNhac.this, R.drawable.repeat);
+
+                    // Tạo màu mới từ tài nguyên color
+                    int newTintColor = ContextCompat.getColor(PhatNhac.this, R.color.new_tint_color);
+
+                    // Thay đổi màu của Drawable
+                    DrawableCompat.setTint(drawable, newTintColor);
+
+                    // Đặt Drawable đã được thay đổi màu làm background cho ImageView
+                    repeat.setImageDrawable(drawable);
+                    Toast.makeText(PhatNhac.this, "phg ngu " + checkrepeat, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,7 +92,19 @@ public class PhatNhac extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhatNhac.this.finish();
+                PhatNhac.this.finish(); MainActivity.LoadBaiHienTai();
+            }
+        });
+        btn_previous_song.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backbai1();
+            }
+        });
+        btn_next_song.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextbai1();
             }
         });
         mHandler = new Handler();
@@ -81,6 +137,13 @@ public class PhatNhac extends AppCompatActivity {
         MainActivity.audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         txt_song_name.setText(danhSachBaiHat.get(stt-1).getTenBaiHat());
         txt_artist_name.setText(" ("+danhSachBaiHat.get(stt-1).getCaSi()+")");
+        String fileName = danhSachBaiHat.get(stt-1).getFileanh(); // Lấy tên tệp ảnh từ đối tượng baiHat
+        int resId = getResources().getIdentifier(fileName, "drawable", getPackageName()); // Tìm ID tài nguyên dựa trên tên tệp ảnh
+        if (resId != 0) {
+            img.setImageResource(resId); // Thiết lập hình ảnh cho ImageView
+        } else {
+            // Xử lý trường hợp không tìm thấy tệp ảnh
+        }
         try {
             mp.reset();
             switch (stt){
@@ -109,7 +172,21 @@ public class PhatNhac extends AppCompatActivity {
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    phatbai(stt+1);
+                    if(checkrepeat==true){
+                        mp.start();
+                    }
+                    else {
+
+                        if(sttbai<4){
+                            phatbai(sttbai+1);
+                            sttbai+=1;
+                        }
+                        else {
+                            phatbai(1);
+                            sttbai=1;
+                        }
+                    }
+
                     // Bắt đầu phát lại khi kết thúc
                 }
             });
@@ -128,6 +205,7 @@ public class PhatNhac extends AppCompatActivity {
         } else {
             // Xử lý trường hợp không tìm thấy tệp ảnh
         }
+
         int currentPos = mp.getCurrentPosition();
         int duration = mp.getDuration();
         int remainingTime = duration - currentPos;
@@ -207,5 +285,25 @@ public class PhatNhac extends AppCompatActivity {
         int seconds = (milliseconds / 1000) % 60;
         int minutes = (milliseconds / (1000 * 60)) % 60;
         return String.format("%02d:%02d", minutes, seconds);
+    }
+    public void  nextbai1(){
+        if(sttbai<4){
+            phatbai(sttbai+1);
+            sttbai+=1;
+        }
+        else {
+            phatbai(1);
+            sttbai=1;
+        }
+    }
+    public void  backbai1(){
+        if(sttbai<2){
+            phatbai(4);
+            sttbai=4;
+        }
+        else {
+            phatbai(sttbai-1);
+            sttbai-=1;
+        }
     }
 }

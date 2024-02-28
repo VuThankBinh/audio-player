@@ -20,7 +20,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     LinearLayout bottom_layout;
     public static ArrayList<BaiHat> danhSachBaiHat = new ArrayList<>();
-    TextView tenbai,tentg;
+    static TextView tenbai;
+    static TextView tentg;
     AppCompatButton playlist;
     ImageView play1,play2,play3,play4,play_pause,nextbai;
     public static int sttbai;
@@ -34,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Tạo và thêm các đối tượng BaiHat vào danh sách
         BaiHat baiHat1 = new BaiHat(1, "Ai ố xì mà", "Nguyễn Đức Phương", "ai_o_si_ma.mp3","img_1");
-        BaiHat baiHat2 = new BaiHat(2, "Nàng thơ", "Hoàng Dũng", "nang_tho.mp3","img_2");
-        BaiHat baiHat3 = new BaiHat(3, "Thằng điên", "Justatee, Phương Ly", "thang_dien.mp3","img_3");
-        BaiHat baiHat4 = new BaiHat(4, "Lối nhỏ", "Đen vâu", "loi_nho.mp3","img_4");
+        BaiHat baiHat2 = new BaiHat(2, "Nàng thơ", "Hoàng Dũng", "nang_tho.mp3","img_6");
+        BaiHat baiHat3 = new BaiHat(3, "Thằng điên", "Justatee, Phương Ly", "thang_dien.mp3","img_8");
+        BaiHat baiHat4 = new BaiHat(4, "Lối nhỏ", "Đen vâu", "loi_nho.mp3","img_7");
 
         danhSachBaiHat.add(baiHat1);
         danhSachBaiHat.add(baiHat2);
@@ -117,8 +118,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private String millisecondsToMMSS(int milliseconds) {
+        int seconds = (milliseconds / 1000) % 60;
+        int minutes = (milliseconds / (1000 * 60)) % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+    static void LoadBaiHienTai() {
+        tenbai.setText(danhSachBaiHat.get(sttbai-1).getTenBaiHat());
+        tentg.setText(danhSachBaiHat.get(sttbai-1).getCaSi());
 
 
+        int currentPos = mp.getCurrentPosition();
+        int duration = mp.getDuration();
+        int remainingTime = duration - currentPos;
+
+    }
     public void  nextbai1(){
         if(sttbai<4){
             phatbai(sttbai+1);
@@ -162,8 +176,14 @@ public class MainActivity extends AppCompatActivity {
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    phatbai(stt+1);
-                    sttbai+=1;
+                    if(sttbai<4){
+                        phatbai(sttbai+1);
+                        sttbai+=1;
+                    }
+                    else {
+                        phatbai(1);
+                        sttbai=1;
+                    }
                 }
             });
         } catch (Exception ex) {
@@ -195,7 +215,4 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
-
 }
