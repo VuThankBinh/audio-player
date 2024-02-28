@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroud"
-
     tools:context=".MainActivity">
     <LinearLayout
         android:layout_width="match_parent"
@@ -220,6 +219,7 @@
                     android:backgroundTint="@color/white"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
+                    android:layout_alignParentEnd="true"
                     />
                 <ImageView
                     android:layout_width="20dp"
