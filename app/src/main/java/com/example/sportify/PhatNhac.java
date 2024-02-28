@@ -18,6 +18,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Random;
 
 public class PhatNhac extends AppCompatActivity {
     ImageButton btn_back;
@@ -60,7 +62,35 @@ public class PhatNhac extends AppCompatActivity {
         img=findViewById(R.id.img);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.xoaytron);
         img.startAnimation(animation);
-
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if(checkrepeat){
+                    mp.start();
+                }
+                else {
+                    if(checkshuffle) {
+                        int randomNumber;
+                        Random random = new Random();
+                        do {
+                            randomNumber = random.nextInt(4 - 1 + 1) + 1;
+                        } while (randomNumber == sttbai);
+                        phatbai(randomNumber);
+                        sttbai = randomNumber;
+                    }
+                    else {
+                        if(sttbai<4){
+                            phatbai(sttbai+1);
+                            sttbai+=1;
+                        }
+                        else {
+                            phatbai(1);
+                            sttbai=1;
+                        }
+                    }
+                }
+            }
+        });
         repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,7 +204,7 @@ public class PhatNhac extends AppCompatActivity {
     public void phatbai(int stt){
         MainActivity.audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         txt_song_name.setText(danhSachBaiHat.get(stt-1).getTenBaiHat());
-        txt_artist_name.setText(" ("+danhSachBaiHat.get(stt-1).getCaSi()+")");
+        txt_artist_name.setText(danhSachBaiHat.get(stt-1).getCaSi());
         String fileName = danhSachBaiHat.get(stt-1).getFileanh(); // Lấy tên tệp ảnh từ đối tượng baiHat
         int resId = getResources().getIdentifier(fileName, "drawable", getPackageName()); // Tìm ID tài nguyên dựa trên tên tệp ảnh
         if (resId != 0) {
@@ -207,47 +237,35 @@ public class PhatNhac extends AppCompatActivity {
             mp.start();
 
             btn_play.setImageResource(R.drawable.baseline_pause_24);
-            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    if(checkrepeat){
-                        mp.start();
-                    }
-                    else if(checkshuffle) {
-                        ArrayList<BaiHat> danhSachBaiHatShuffle = new ArrayList<>();
-                        danhSachBaiHatShuffle = danhSachBaiHat;
-                        danhSachBaiHatShuffle.remove(sttbai - 1);
-                        Collections.shuffle(danhSachBaiHatShuffle);
-                        danhSachBaiHatShuffle.add(danhSachBaiHat.get(sttbai - 1));
-                        danhSachBaiHat = danhSachBaiHatShuffle;
-                    }
-                    else if(!checkshuffle) {
-                        danhSachBaiHat = new ArrayList<>();
-                        // Tạo và thêm các đối tượng BaiHat vào danh sách
-                        BaiHat baiHat1 = new BaiHat(1, "Ai ố xì mà", "Nguyễn Đức Phương", "ai_o_si_ma.mp3","img_1");
-                        BaiHat baiHat2 = new BaiHat(2, "Nàng thơ", "Hoàng Dũng", "nang_tho.mp3","img_6");
-                        BaiHat baiHat3 = new BaiHat(3, "Thằng điên", "Justatee, Phương Ly", "thang_dien.mp3","img_8");
-                        BaiHat baiHat4 = new BaiHat(4, "Lối nhỏ", "Đen vâu", "loi_nho.mp3","img_7");
-
-                        danhSachBaiHat.add(baiHat1);
-                        danhSachBaiHat.add(baiHat2);
-                        danhSachBaiHat.add(baiHat3);
-                        danhSachBaiHat.add(baiHat4);
-                    }
-                    else {
-                        if(sttbai<4){
-                            phatbai(sttbai+1);
-                            sttbai+=1;
-                        }
-                        else {
-                            phatbai(1);
-                            sttbai=1;
-                        }
-                    }
-
-                    // Bắt đầu phát lại khi kết thúc
-                }
-            });
+//            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                @Override
+//                public void onCompletion(MediaPlayer mp) {
+//                    if(checkrepeat){
+//                        mp.start();
+//                    }
+//                    else {
+//                        if(checkshuffle) {
+//                            int randomNumber;
+//                            Random random = new Random();
+//                            do {
+//                                randomNumber = random.nextInt(4 - 1 + 1) + 1;
+//                            } while (randomNumber == sttbai);
+//                            phatbai(randomNumber);
+//                            sttbai = randomNumber;
+//                        }
+//                        else {
+//                            if(sttbai<2){
+//                                phatbai(4);
+//                                sttbai=4;
+//                            }
+//                            else {
+//                                phatbai(sttbai-1);
+//                                sttbai-=1;
+//                            }
+//                        }
+//                    }
+//                }
+//            });
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -269,8 +287,6 @@ public class PhatNhac extends AppCompatActivity {
         int remainingTime = duration - currentPos;
         String currentPositionStr = millisecondsToMMSS(currentPos);
         String remainingTimeStr = millisecondsToMMSS(remainingTime);
-//        Toast.makeText(this, "Current pos: " + currentPositionStr + ", duration: "
-//                + duration + ", remainingTime: " + remainingTimeStr, Toast.LENGTH_SHORT).show();
         txt_current_time.setText(currentPositionStr);
         txt_remaining_time.setText(remainingTimeStr);
     }
@@ -345,23 +361,55 @@ public class PhatNhac extends AppCompatActivity {
         return String.format("%02d:%02d", minutes, seconds);
     }
     public void  nextbai1(){
-        if(sttbai<4){
-            phatbai(sttbai+1);
-            sttbai+=1;
+        if(checkrepeat){
+            mp.start();
         }
         else {
-            phatbai(1);
-            sttbai=1;
+            if(checkshuffle) {
+                int randomNumber;
+                Random random = new Random();
+                do {
+                    randomNumber = random.nextInt(4 - 1 + 1) + 1;
+                } while (randomNumber == sttbai);
+                phatbai(randomNumber);
+                sttbai = randomNumber;
+            }
+            else {
+                if(sttbai<4){
+                    phatbai(sttbai+1);
+                    sttbai+=1;
+                }
+                else {
+                    phatbai(1);
+                    sttbai=1;
+                }
+            }
         }
     }
     public void  backbai1(){
-        if(sttbai<2){
-            phatbai(4);
-            sttbai=4;
+        if(checkrepeat){
+            mp.start();
         }
         else {
-            phatbai(sttbai-1);
-            sttbai-=1;
+            if(checkshuffle) {
+                int randomNumber;
+                Random random = new Random();
+                do {
+                    randomNumber = random.nextInt(4 - 1 + 1) + 1;
+                } while (randomNumber == sttbai);
+                phatbai(randomNumber);
+                sttbai = randomNumber;
+            }
+            else {
+                if(sttbai<2){
+                    phatbai(4);
+                    sttbai=4;
+                }
+                else {
+                    phatbai(sttbai-1);
+                    sttbai-=1;
+                }
+            }
         }
     }
 }

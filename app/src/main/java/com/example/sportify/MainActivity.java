@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                phatbai(1);
+                phatbai2(1);
                 sttbai=1;
             }
         });
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                phatbai(2);
+                phatbai2(2);
                 sttbai=2;
             }
         });
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                phatbai(3);
+                phatbai2(3);
                 sttbai=3;
             }
         });
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                phatbai(4);
+                phatbai2(4);
                 sttbai=4;
             }
         });
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
     static void LoadBaiHienTai() {
         tenbai.setText(danhSachBaiHat.get(sttbai-1).getTenBaiHat());
-        tentg.setText(danhSachBaiHat.get(sttbai-1).getCaSi());
+        tentg.setText(" - " + danhSachBaiHat.get(sttbai-1).getCaSi());
 
 
         int currentPos = mp.getCurrentPosition();
@@ -135,19 +135,18 @@ public class MainActivity extends AppCompatActivity {
     }
     public void  nextbai1(){
         if(sttbai<4){
-            phatbai(sttbai+1);
+            phatbai2(sttbai+1);
             sttbai+=1;
         }
         else {
-            phatbai(1);
+            phatbai2(1);
             sttbai=1;
         }
     }
-    public void phatbai(int stt){
-//        Toast.makeText(MainActivity.this, "bài số"+sttbai, Toast.LENGTH_SHORT).show();
+    public void phatbai2(int stt){
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         tenbai.setText(danhSachBaiHat.get(stt-1).getTenBaiHat());
-        tentg.setText(" ("+danhSachBaiHat.get(stt-1).getCaSi()+")");
+        tentg.setText(" - "+danhSachBaiHat.get(stt-1).getCaSi());
         try {
             mp.reset();
             switch (stt){
@@ -177,11 +176,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     if(sttbai<4){
-                        phatbai(sttbai+1);
+                        phatbai2(sttbai+1);
                         sttbai+=1;
                     }
                     else {
-                        phatbai(1);
+                        phatbai2(1);
                         sttbai=1;
                     }
                 }
@@ -204,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             if(currentPosition == 0) {
-                phatbai(1);
+                phatbai2(1);
                 sttbai=1;
             }
             else {
