@@ -39,13 +39,22 @@
             android:layout_below="@+id/txt_album"
             android:layout_centerHorizontal="true"/>
     </RelativeLayout>
-    <ImageView
+    <androidx.cardview.widget.CardView
         android:layout_width="320dp"
-        android:layout_height="380dp"
+        android:layout_height="320dp"
+        app:cardCornerRadius="160dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/img"
-        android:id="@+id/img"/>
+        android:layout_marginTop="20dp"> <!-- Điều chỉnh giá trị bán kính cho góc -->
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/img"
+            android:scaleType="centerCrop"
+            android:id="@+id/img"/> <!-- Đảm bảo hình ảnh vừa với kích thước của CardView -->
+
+    </androidx.cardview.widget.CardView>
+
     <TextView
         android:id="@+id/txt_song_name"
         android:layout_width="wrap_content"

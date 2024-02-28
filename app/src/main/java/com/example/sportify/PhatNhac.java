@@ -19,6 +19,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -51,6 +53,10 @@ public class PhatNhac extends AppCompatActivity {
         txt_remaining_time = findViewById(R.id.txt_remaining_time);
         repeat=findViewById(R.id.btn_repeat);
         shuffle=findViewById(R.id.btn_suffer);
+        img=findViewById(R.id.img);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.xoaytron);
+        img.startAnimation(animation);
+
         repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,7 +203,7 @@ public class PhatNhac extends AppCompatActivity {
     public void LoadBaiHienTai() {
         txt_song_name.setText(danhSachBaiHat.get(sttbai-1).getTenBaiHat());
         txt_artist_name.setText(danhSachBaiHat.get(sttbai-1).getCaSi());
-        img=findViewById(R.id.img);
+
         String fileName = danhSachBaiHat.get(sttbai-1).getFileanh(); // Lấy tên tệp ảnh từ đối tượng baiHat
         int resId = getResources().getIdentifier(fileName, "drawable", getPackageName()); // Tìm ID tài nguyên dựa trên tên tệp ảnh
         if (resId != 0) {
