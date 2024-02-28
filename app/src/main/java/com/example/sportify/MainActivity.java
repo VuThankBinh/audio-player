@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -147,12 +146,12 @@ public class MainActivity extends AppCompatActivity {
             mp.start();
 
             play_pause.setImageResource(R.drawable.baseline_pause_24);
-//            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//                @Override
-//                public void onCompletion(MediaPlayer mp) {
-//                    mp.start(); // Bắt đầu phát lại khi kết thúc
-//                }
-//            });
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.start(); // Bắt đầu phát lại khi kết thúc
+                }
+            });
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -161,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         if (mp != null && mp.isPlaying()) {
             mp.pause();
             currentPosition = mp.getCurrentPosition();
-            play_pause.setImageResource(R.drawable.play5);
+            play_pause.setImageResource(R.drawable.play_5);
         }
     }
 
