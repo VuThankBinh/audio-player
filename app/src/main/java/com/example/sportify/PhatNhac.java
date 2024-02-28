@@ -1,4 +1,4 @@
-package com.example.audio_player;
+package com.example.sportify;
 
 import androidx.appcompat.app.AppCompatActivity;
 
