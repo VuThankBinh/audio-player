@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     static TextView tenbai;
     static TextView tentg;
     AppCompatButton playlist;
-    ImageView play1,play2,play3,play4,play_pause,nextbai;
+    ImageView play1,play2,play3,play4,nextbai;
+    static ImageView play_pause;
     public static int sttbai;
     public static MediaPlayer mp = new MediaPlayer();
     public static AudioManager audioManager;
@@ -51,6 +52,54 @@ public class MainActivity extends AppCompatActivity {
         play3=findViewById(R.id.play3);
         play4=findViewById(R.id.play4);
         play_pause=findViewById(R.id.play);
+        playlist=findViewById(R.id.playlist);
+        boolean[] baml1 = {false};
+        playlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(playlist.getText().toString().trim().toUpperCase().compareTo("PLAY")==0){
+                    if(baml1[0] ==false){
+                        phatbai2(1);
+                        sttbai=1;
+                        baml1[0] =true;
+                        playlist.setText("PAUSE");
+
+                    }
+                    else {
+                        pauseAudio();
+                        if (mp != null && mp.isPlaying()) {
+                            playlist.setText("PAUSE");
+                        }
+                        else {
+                            if(currentPosition == 0) {
+                                playlist.setText("PLAY");
+                            }
+                            else {
+                                mp.seekTo(currentPosition);
+                                playlist.setText("PLAY");
+                            }
+                        }
+                    }
+
+                }
+                else {
+                    pauseAudio();
+                    if (mp != null && mp.isPlaying()) {
+                        playlist.setText("PAUSE");
+                    }
+                    else {
+                        if(currentPosition == 0) {
+                            playlist.setText("PLAY");
+                        }
+                        else {
+                            mp.seekTo(currentPosition);
+                            playlist.setText("PLAY");
+                        }
+                    }
+                }
+
+            }
+        });
         play_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

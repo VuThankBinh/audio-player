@@ -341,6 +341,7 @@ public class PhatNhac extends AppCompatActivity {
             mp.pause();
             currentPosition = mp.getCurrentPosition();
             btn_play.setImageResource(R.drawable.play4);
+            MainActivity.play_pause.setImageResource(R.drawable.play_5);
         }
         else {
             if(currentPosition == 0) {
@@ -351,6 +352,7 @@ public class PhatNhac extends AppCompatActivity {
                 mp.seekTo(currentPosition);
                 mp.start();
                 btn_play.setImageResource(R.drawable.baseline_pause_24);
+                MainActivity.play_pause.setImageResource(R.drawable.baseline_pause_24);
             }
         }
 
