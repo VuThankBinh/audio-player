@@ -2,7 +2,6 @@ package com.example.sportify;
 
 import static com.example.sportify.MainActivity.currentPosition;
 import static com.example.sportify.MainActivity.danhSachBaiHat;
-import static com.example.sportify.MainActivity.danhSachBaiHatDefault;
 import static com.example.sportify.MainActivity.mp;
 import static com.example.sportify.MainActivity.sttbai;
 
@@ -19,6 +18,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,6 +32,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Random;
 
 public class PhatNhac extends AppCompatActivity {
     ImageButton btn_back;
@@ -61,7 +62,35 @@ public class PhatNhac extends AppCompatActivity {
         img=findViewById(R.id.img);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.xoaytron);
         img.startAnimation(animation);
-
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if(checkrepeat){
+                    mp.start();
+                }
+                else {
+                    if(checkshuffle) {
+                        int randomNumber;
+                        Random random = new Random();
+                        do {
+                            randomNumber = random.nextInt(4 - 1 + 1) + 1;
+                        } while (randomNumber == sttbai);
+                        phatbai(randomNumber);
+                        sttbai = randomNumber;
+                    }
+                    else {
+                        if(sttbai<4){
+                            phatbai(sttbai+1);
+                            sttbai+=1;
+                        }
+                        else {
+                            phatbai(1);
+                            sttbai=1;
+                        }
+                    }
+                }
+            }
+        });
         repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,20 +201,16 @@ public class PhatNhac extends AppCompatActivity {
         });
         LoadBaiHienTai();
     }
-    public void phatbai1(int stt){
+    public void phatbai(int stt){
         MainActivity.audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         txt_song_name.setText(danhSachBaiHat.get(stt-1).getTenBaiHat());
-        txt_artist_name.setText(" ("+danhSachBaiHat.get(stt-1).getCaSi()+")");
-        img=findViewById(R.id.img);
-
+        txt_artist_name.setText(danhSachBaiHat.get(stt-1).getCaSi());
         String fileName = danhSachBaiHat.get(stt-1).getFileanh(); // Lấy tên tệp ảnh từ đối tượng baiHat
         int resId = getResources().getIdentifier(fileName, "drawable", getPackageName()); // Tìm ID tài nguyên dựa trên tên tệp ảnh
-
         if (resId != 0) {
             img.setImageResource(resId); // Thiết lập hình ảnh cho ImageView
         } else {
-
-            Toast.makeText(PhatNhac.this, "resId", Toast.LENGTH_SHORT).show();
+            // Xử lý trường hợp không tìm thấy tệp ảnh
         }
         try {
             mp.reset();
@@ -212,28 +237,35 @@ public class PhatNhac extends AppCompatActivity {
             mp.start();
 
             btn_play.setImageResource(R.drawable.baseline_pause_24);
-            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-
-                    if(checkrepeat){
-                        mp.start();
-                    }
-                    else {
-                       danhSachBaiHat=danhSachBaiHatDefault;
-                        if(sttbai<4){
-                            phatbai1(sttbai+1);
-                            sttbai+=1;
-                        }
-                        else {
-                            phatbai1(1);
-                            sttbai=1;
-                        }
-                    }
-
-
-                }
-            });
+//            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                @Override
+//                public void onCompletion(MediaPlayer mp) {
+//                    if(checkrepeat){
+//                        mp.start();
+//                    }
+//                    else {
+//                        if(checkshuffle) {
+//                            int randomNumber;
+//                            Random random = new Random();
+//                            do {
+//                                randomNumber = random.nextInt(4 - 1 + 1) + 1;
+//                            } while (randomNumber == sttbai);
+//                            phatbai(randomNumber);
+//                            sttbai = randomNumber;
+//                        }
+//                        else {
+//                            if(sttbai<2){
+//                                phatbai(4);
+//                                sttbai=4;
+//                            }
+//                            else {
+//                                phatbai(sttbai-1);
+//                                sttbai-=1;
+//                            }
+//                        }
+//                    }
+//                }
+//            });
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -255,8 +287,6 @@ public class PhatNhac extends AppCompatActivity {
         int remainingTime = duration - currentPos;
         String currentPositionStr = millisecondsToMMSS(currentPos);
         String remainingTimeStr = millisecondsToMMSS(remainingTime);
-//        Toast.makeText(this, "Current pos: " + currentPositionStr + ", duration: "
-//                + duration + ", remainingTime: " + remainingTimeStr, Toast.LENGTH_SHORT).show();
         txt_current_time.setText(currentPositionStr);
         txt_remaining_time.setText(remainingTimeStr);
     }
@@ -314,7 +344,7 @@ public class PhatNhac extends AppCompatActivity {
         }
         else {
             if(currentPosition == 0) {
-                phatbai1(1);
+                phatbai(1);
                 sttbai=1;
             }
             else {
@@ -331,23 +361,55 @@ public class PhatNhac extends AppCompatActivity {
         return String.format("%02d:%02d", minutes, seconds);
     }
     public void  nextbai1(){
-        if(sttbai<4){
-            phatbai1(sttbai+1);
-            sttbai+=1;
+        if(checkrepeat){
+            mp.start();
         }
         else {
-            phatbai1(1);
-            sttbai=1;
+            if(checkshuffle) {
+                int randomNumber;
+                Random random = new Random();
+                do {
+                    randomNumber = random.nextInt(4 - 1 + 1) + 1;
+                } while (randomNumber == sttbai);
+                phatbai(randomNumber);
+                sttbai = randomNumber;
+            }
+            else {
+                if(sttbai<4){
+                    phatbai(sttbai+1);
+                    sttbai+=1;
+                }
+                else {
+                    phatbai(1);
+                    sttbai=1;
+                }
+            }
         }
     }
     public void  backbai1(){
-        if(sttbai<2){
-            phatbai1(4);
-            sttbai=4;
+        if(checkrepeat){
+            mp.start();
         }
         else {
-            phatbai1(sttbai-1);
-            sttbai-=1;
+            if(checkshuffle) {
+                int randomNumber;
+                Random random = new Random();
+                do {
+                    randomNumber = random.nextInt(4 - 1 + 1) + 1;
+                } while (randomNumber == sttbai);
+                phatbai(randomNumber);
+                sttbai = randomNumber;
+            }
+            else {
+                if(sttbai<2){
+                    phatbai(4);
+                    sttbai=4;
+                }
+                else {
+                    phatbai(sttbai-1);
+                    sttbai-=1;
+                }
+            }
         }
     }
 }
