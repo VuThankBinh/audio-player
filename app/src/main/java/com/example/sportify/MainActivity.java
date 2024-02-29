@@ -54,32 +54,7 @@ public class MainActivity extends AppCompatActivity {
         play3=findViewById(R.id.play3);
         play4=findViewById(R.id.play4);
         play_pause=findViewById(R.id.play);
-        playlist=findViewById(R.id.playlist);
-        final boolean[] baml1 = {false};
-        playlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(playlist.getText().toString().trim().toUpperCase().compareTo("PLAY")!=0){
-                    if(baml1[0] ==false){
-                        phatbai(1);
-                        sttbai=1;
-                        baml1[0] =true;
-                    }
-                    else {
-                        pauseAudio();
-                    }
-                    playlist.setText("PAUSE");
-                    play_pause.setImageResource(R.drawable.baseline_pause_24);
 
-                }
-                else {
-                    pauseAudio();
-                    playlist.setText("PLAY");
-                    play_pause.setImageResource(R.drawable.play_5);
-                }
-
-            }
-        });
         play_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
