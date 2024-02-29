@@ -10,7 +10,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,9 +19,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout bottom_layout;
-
     public static ArrayList<BaiHat> danhSachBaiHat = new ArrayList<>();
-    public static ArrayList<BaiHat> danhSachBaiHatDefault = new ArrayList<>();
     static TextView tenbai;
     static TextView tentg;
     AppCompatButton playlist;
@@ -54,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         play3=findViewById(R.id.play3);
         play4=findViewById(R.id.play4);
         play_pause=findViewById(R.id.play);
-
         play_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                phatbai(1);
+                phatbai2(1);
                 sttbai=1;
             }
         });
@@ -73,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                phatbai(2);
+                phatbai2(2);
                 sttbai=2;
             }
         });
@@ -81,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                phatbai(3);
+                phatbai2(3);
                 sttbai=3;
             }
         });
@@ -89,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                phatbai(4);
+                phatbai2(4);
                 sttbai=4;
             }
         });
@@ -129,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
     static void LoadBaiHienTai() {
         tenbai.setText(danhSachBaiHat.get(sttbai-1).getTenBaiHat());
-        tentg.setText(danhSachBaiHat.get(sttbai-1).getCaSi());
+        tentg.setText(" - " + danhSachBaiHat.get(sttbai-1).getCaSi());
 
 
         int currentPos = mp.getCurrentPosition();
@@ -139,19 +135,18 @@ public class MainActivity extends AppCompatActivity {
     }
     public void  nextbai1(){
         if(sttbai<4){
-            phatbai(sttbai+1);
+            phatbai2(sttbai+1);
             sttbai+=1;
         }
         else {
-            phatbai(1);
+            phatbai2(1);
             sttbai=1;
         }
     }
-    public void phatbai(int stt){
-//        Toast.makeText(MainActivity.this, "bài số"+sttbai, Toast.LENGTH_SHORT).show();
+    public void phatbai2(int stt){
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         tenbai.setText(danhSachBaiHat.get(stt-1).getTenBaiHat());
-        tentg.setText(" ("+danhSachBaiHat.get(stt-1).getCaSi()+")");
+        tentg.setText(" - "+danhSachBaiHat.get(stt-1).getCaSi());
         try {
             mp.reset();
             switch (stt){
@@ -181,11 +176,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     if(sttbai<4){
-                        phatbai(sttbai+1);
+                        phatbai2(sttbai+1);
                         sttbai+=1;
                     }
                     else {
-                        phatbai(1);
+                        phatbai2(1);
                         sttbai=1;
                     }
                 }
@@ -208,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             if(currentPosition == 0) {
-                phatbai(1);
+                phatbai2(1);
                 sttbai=1;
             }
             else {
