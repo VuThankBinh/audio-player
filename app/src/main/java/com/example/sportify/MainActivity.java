@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
         BaiHat baiHat2 = new BaiHat(2, "Nàng thơ", "Hoàng Dũng", "nang_tho.mp3","img_6");
         BaiHat baiHat3 = new BaiHat(3, "Thằng điên", "Justatee, Phương Ly", "thang_dien.mp3","img_8");
         BaiHat baiHat4 = new BaiHat(4, "Lối nhỏ", "Đen vâu", "loi_nho.mp3","img_7");
+
+        Uri fileUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/baitaplon-e42e3.appspot.com/o/loi_nho.mp3?alt=media&token=0bd2fbc3-c03c-4040-b2c1-d4a8bab3bcfa");
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, fileUri);
+        mediaPlayer.start();
+        if(mediaPlayer.isPlaying()){
+            Toast.makeText(this, "ok nhớ", Toast.LENGTH_SHORT).show();
+        }
 
         danhSachBaiHat.add(baiHat1);
         danhSachBaiHat.add(baiHat2);
